@@ -1,18 +1,18 @@
-package com.aol.spring.demo;
+package com.aol.spring.demo.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Created by ram on 01/03/16.
  */
 @Entity
+@Table(name = "chat")
 public class Chat extends AbstractEntity {
     private String message;
     @Column(unique = true, nullable = false)
-    private long userId;
+    private Long userId;
 
     public String getMessage() {
         return message;
@@ -22,11 +22,11 @@ public class Chat extends AbstractEntity {
         this.message = message;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 }

@@ -1,14 +1,12 @@
-package com.aol.spring.demo;
+package com.aol.spring.demo.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by ram on 01/03/16.
  */
 @Entity
+@Table(name = "user")
 public class User extends AbstractEntity {
     @Column(nullable = false)
     private String name;
