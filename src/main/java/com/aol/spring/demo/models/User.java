@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class User extends AbstractEntity {
     @Column(nullable = false)
     private String name;
+    @Column(unique = true, nullable = false)
     private String email;
 
     public String getName() {

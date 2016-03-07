@@ -29,19 +29,18 @@ public class UserDao {
         getSession().delete(user);
     }
 
-    @SuppressWarnings("unchecked")
     public List getAll() {
-        return getSession().createQuery("from User").list();
+        return getSession().createQuery("from user").list();
     }
 
     public User getByEmail(String email) {
         return (User) getSession().createQuery(
-                "from User where email = :email")
+                "from user where email = :email")
                 .setParameter("email", email)
                 .uniqueResult();
     }
 
-    public User getById(long id) {
+    public User getById(Long id) {
         return (User) getSession().load(User.class, id);
     }
 

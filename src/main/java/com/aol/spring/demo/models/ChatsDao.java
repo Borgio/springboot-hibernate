@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * Created by ram on 02/03/16.
@@ -19,5 +20,17 @@ public class ChatsDao {
 
     private Session getSession() {
         return _sessionFactory.getCurrentSession();
+    }
+
+    public void save(Chat chat) {
+        getSession().save(chat);
+    }
+
+    public void delete(Chat chat) {
+        getSession().delete(chat);
+    }
+
+    public List getAll() {
+        return getSession().createQuery("from chat").list();
     }
 }

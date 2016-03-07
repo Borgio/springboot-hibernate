@@ -11,10 +11,10 @@ public class AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private long timestamp;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

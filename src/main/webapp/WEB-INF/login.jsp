@@ -10,6 +10,7 @@
     <input type="text" placeholder="name" name="name"/>
     <br/>
     <input type="email" placeholder="email" name="email"/>
+    <br/>
     <input type="submit" value="Login"/>
 </form>
 </body>
