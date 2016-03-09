@@ -52,31 +52,58 @@
 </div>
 </body>
 <script type="text/javascript">
-    // utility methods
-    function ajaxRequest(url, type, callback, data) {
-        httpRequest = new XMLHttpRequest();
-
-        if (!httpRequest) {
-            alert('Giving up :( Cannot create an XMLHTTP instance');
-            return false;
-        }
-        httpRequest.onreadystatechange = callback;
-        httpRequest.open(type, url);
-        httpRequest.send();
-    }
-
     function sendChat() {
-        var message = document.getElementById('new-chat-input').value.trim();
+        var message = document.getElementById('new-chat-input').value.trim(),
+                xhr = new XMLHttpRequest();
 
+        xhr.open('POST', encodeURI('/post-chat'));
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function(response) {
+            if (xhr.status === 200) {
+
+            } else {
+                alert('Request failed.  Returned status of ' + xhr.status);
+            }
+        };
+        xhr.send(encodeURI('message=' + message));
     }
 
     function fetchAllChats() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', encodeURI('/get-all-chats'));
+        xhr.onload = function(response) {
+            if (xhr.status === 200) {
+                console.log(response);
+            } else {
+                alert('Request failed.  Returned status of ' + xhr.status);
+            }
+        };
+        xhr.send();
+    }
 
+    function fetchAllUsers() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', encodeURI('/get-all-users'));
+        xhr.onload = function(response) {
+            if (xhr.status === 200) {
+                console.log(response);
+            } else {
+                alert('Request failed.  Returned status of ' + xhr.status);
+            }
+        };
+        xhr.send();
     }
 
     document.getElementById('new-chat-button').addEventListener('click', sendChat);
+    document.getElementById('new-chat-input').addEventListener('keyUp', function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) { // enter key press
+            sendChat();
+        }
+    });
 
     setInterval(fetchAllChats, 2000);
+    setInterval(fetchAllUsers, 2000);
 
 </script>
 </html>
