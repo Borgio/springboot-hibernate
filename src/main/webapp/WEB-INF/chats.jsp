@@ -57,6 +57,7 @@
                 document.getElementById('new-chat-input').value = '';
             } else {
                 alert('Request failed.  Returned status of ' + xhr.status);
+                location.href = '/';
             }
         };
         xhr.send(encodeURI('message=' + message));
