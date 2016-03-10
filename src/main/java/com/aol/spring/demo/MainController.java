@@ -74,8 +74,10 @@ public class MainController {
             user.setEmail(email);
             user.setTimestamp(new Date().getTime());
 
-            // save user in db
-            _userDao.save(user);
+            // save user in db (if new)
+            if (_userDao.getByEmail(email) == null) {
+                _userDao.save(user);
+            }
 
             // save in cookie
             Cookie cookie = new Cookie("name", name);
