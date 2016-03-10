@@ -31,6 +31,6 @@ public class ChatsDao {
     }
 
     public List getAll() {
-        return getSession().createQuery("from chat").list();
+        return getSession().createQuery("from Chat").list();
     }
 }

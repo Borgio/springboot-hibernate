@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import javax.transaction.Transactional;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @Repository
 @Transactional
 public class UserDao {
+
     @Autowired
     private SessionFactory _sessionFactory;
 
@@ -30,12 +32,12 @@ public class UserDao {
     }
 
     public List getAll() {
-        return getSession().createQuery("from user").list();
+        return getSession().createQuery("from User").list();
     }
 
     public User getByEmail(String email) {
         return (User) getSession().createQuery(
-                "from user where email = :email")
+                "from User where email = :email")
                 .setParameter("email", email)
                 .uniqueResult();
     }

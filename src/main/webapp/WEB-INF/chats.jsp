@@ -32,20 +32,14 @@
 <body>
 <div id="container">
     <div id="chats-container" class="inner-container">
-        <div><strong>Ram:</strong><span>my message</span></div>
-        <div><strong>Ram:</strong><span>my measdfsdf sdgfdsfds dsfdsf sdfdsf sdfdsfretuyi yuiuyi hxcv dsf dsfsf dsfdsf sdfds ewrwe qweqwewqe vcbbvcb trytr rtererjkkzxc asdwqeq we dfasdqwebvnj ghiuyi tyuy ty werewr sdfxcvb gfytry try retyrey ser sdf sarewrew ewrr dsfgfdgfdge</span>
-        </div>
-        <div><strong>Ram:</strong><span>my message</span></div>
-        <div><strong>Ram:</strong><span>my message</span></div>
     </div>
     <div id="users-container" class="inner-container">
-
     </div>
 </div>
 <div id="new-chat-container">
     <textarea id="new-chat-input" cols="50"></textarea>
     <br/>
-    <input type="button" value="Send" id="new-chat-button">
+    <input type="button" value="Send" id="new-chat-button"><br/><br/>
     <form method="post" action="/logout">
         <input type="submit" value="logout"/>
     </form>
@@ -58,9 +52,9 @@
 
         xhr.open('POST', encodeURI('/post-chat'));
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function(response) {
+        xhr.onload = function (response) {
             if (xhr.status === 200) {
-
+                document.getElementById('new-chat-input').value = '';
             } else {
                 alert('Request failed.  Returned status of ' + xhr.status);
             }
@@ -71,11 +65,21 @@
     function fetchAllChats() {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', encodeURI('/get-all-chats'));
-        xhr.onload = function(response) {
-            if (xhr.status === 200) {
-                console.log(response);
-            } else {
-                alert('Request failed.  Returned status of ' + xhr.status);
+        xhr.onload = function (response) {
+            try {
+                if (xhr.status === 200) {
+                    var json = JSON.parse(response.target.responseText);
+                    var chats_container = document.getElementById('chats-container');
+                    var chats = '';
+                    for (var i = 0; i < json.length; i++) {
+                        chats += '<div><strong>' + json[i].user.name + ': </strong><span>' + json[i].message + '</span>';
+                    }
+                    chats_container.innerHTML = chats;
+                } else {
+                    alert('Request failed.  Returned status of ' + xhr.status);
+                }
+            } catch (e) {
+                console.log(e);
             }
         };
         xhr.send();
@@ -84,18 +88,28 @@
     function fetchAllUsers() {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', encodeURI('/get-all-users'));
-        xhr.onload = function(response) {
-            if (xhr.status === 200) {
-                console.log(response);
-            } else {
-                alert('Request failed.  Returned status of ' + xhr.status);
+        xhr.onload = function (response) {
+            try {
+                if (xhr.status === 200) {
+                    var json = JSON.parse(response.target.responseText);
+                    var users_container = document.getElementById('users-container');
+                    var users = '';
+                    for (var i = 0; i < json.length; i++) {
+                        users += '<strong>' + json[i].name + '</strong><br/>';
+                    }
+                    users_container.innerHTML = users;
+                } else {
+                    alert('Request failed.  Returned status of ' + xhr.status);
+                }
+            } catch (e) {
+                console.log(e);
             }
         };
         xhr.send();
     }
 
     document.getElementById('new-chat-button').addEventListener('click', sendChat);
-    document.getElementById('new-chat-input').addEventListener('keyUp', function (e) {
+    document.getElementById('new-chat-input').addEventListener('keyup', function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) { // enter key press
             sendChat();

@@ -52,8 +52,8 @@ public class MainController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public ModelAndView logout(HttpServletRequest request,
                                HttpServletResponse response) {
-        for(Cookie cookie : request.getCookies()) {
-            if(cookie.getName() == "name" || cookie.getName() == "email") {
+        for (Cookie cookie : request.getCookies()) {
+            if ("name".equals(cookie.getName()) || "email".equals(cookie.getName())) {
                 // clear cookie
                 cookie.setMaxAge(0);
                 response.addCookie(cookie);
@@ -118,17 +118,23 @@ public class MainController {
 
     @ResponseBody
     @RequestMapping(value = "/post-chat", method = RequestMethod.POST)
-    public String postChat(@RequestParam String message,
+    public ModelAndView postChat(HttpServletRequest request,
+                           HttpServletResponse response,
+                           @RequestParam String message,
                            @CookieValue(required = true) String name,
                            @CookieValue(required = true) String email) {
         try {
             // fetch user info
             User user = _userDao.getByEmail(email);
 
+            if (user == null) {
+                return logout(request, response);
+            }
+
             // create new chat object
             Chat chat = new Chat();
             chat.setMessage(message);
-            chat.setUserId(user.getId());
+            chat.setUser(user);
             chat.setTimestamp(new Date().getTime());
 
             // save chat in db
